@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Supabase Connection</title>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <button onclick="testConnection()">Test Connection</button>
+    <button onclick="addTestStudent()">Add Test Student</button>
+    <button onclick="fetchStudents()">Fetch Students</button>
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+        const supabaseUrl = 'https://gvajenmokzbmczxtiqcr.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2YWplbm1va3pibWN6eHRpcWNyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5OTQwMTAsImV4cCI6MjA4NzU3MDAxMH0.ft8F8sCenlA-IIjWsKaB_UWQNhV4_n6PF85HkNe15X0'
+
+        const supabase = createClient(supabaseUrl, supabaseKey)
+
+        window.testConnection = async () => {
+            const output = document.getElementById('output')
+            output.textContent = 'Testing connection...\n'
+
+            try {
+                const { data, error } = await supabase.from('students').select('count')
+                if (error) throw error
+                output.textContent += 'Connection successful!\n'
+                output.textContent += JSON.stringify(data, null, 2)
+            } catch (err) {
+                output.textContent += 'Error: ' + err.message
+            }
+        }
+
+        window.addTestStudent = async () => {
+            const output = document.getElementById('output')
+            output.textContent = 'Adding test student...\n'
+
+            try {
+                const { data, error } = await supabase
+                    .from('students')
+                    .insert([{
+                        name: 'Test Student',
+                        hourly_rate: 50,
+                        category: 'gym'
+                    }])
+                    .select()
+
+                if (error) throw error
+                output.textContent += 'Student added successfully!\n'
+                output.textContent += JSON.stringify(data, null, 2)
+            } catch (err) {
+                output.textContent += 'Error: ' + err.message + '\n'
+                output.textContent += JSON.stringify(err, null, 2)
+            }
+        }
+
+        window.fetchStudents = async () => {
+            const output = document.getElementById('output')
+            output.textContent = 'Fetching students...\n'
+
+            try {
+                const { data, error } = await supabase
+                    .from('students')
+                    .select('*')
+
+                if (error) throw error
+                output.textContent += 'Students fetched successfully!\n'
+                output.textContent += JSON.stringify(data, null, 2)
+            } catch (err) {
+                output.textContent += 'Error: ' + err.message
+            }
+        }
+    </script>
+</body>
+</html>
