@@ -44,7 +44,11 @@ const SessionForm = ({ session, students, onClose, onSave, onDelete }: SessionFo
       setMinutes(sessionMinutes.toString())
       setNotes(session.notes || '')
       setCategory(session.category)
-      setStatus(session.status)
+      // Only set status if it's one of the allowed values for editing
+      const allowedStatus: SessionStatus = session.status === 'pending' || session.status === 'rescheduled'
+        ? 'completed'
+        : session.status
+      setStatus(allowedStatus)
     } else {
       const today = new Date().toISOString().split('T')[0]
       setSessionDate(today)

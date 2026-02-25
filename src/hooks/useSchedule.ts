@@ -55,6 +55,7 @@ export const useSchedule = () => {
       setError(null)
       const { data, error: insertError } = await supabase
         .from('schedule_slots')
+        // @ts-ignore - Supabase type inference issue
         .insert([
           {
             student_id: slot.studentId,
@@ -108,6 +109,7 @@ export const useSchedule = () => {
 
       const { data, error: updateError } = await supabase
         .from('schedule_slots')
+        // @ts-ignore - Supabase type inference issue
         .update(updateData)
         .eq('id', id)
         .select()

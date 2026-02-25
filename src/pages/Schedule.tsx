@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useSchedule } from '../hooks/useSchedule'
 import { useStudents } from '../hooks/useStudents'
 import { ScheduleSlot, Category, CATEGORIES } from '../types'
-import { PlusIcon, ClockIcon, ChevronRightIcon, TrashIcon } from '../components/ui/Icons'
+import { PlusIcon, ClockIcon, TrashIcon } from '../components/ui/Icons'
 
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 

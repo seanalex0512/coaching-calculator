@@ -42,7 +42,9 @@ const More = () => {
                 className="w-12 h-12 rounded-full flex items-center justify-center"
                 style={{ backgroundColor: `${item.color}15` }}
               >
-                <Icon size={24} style={{ color: item.color }} />
+                <div style={{ color: item.color }}>
+                  <Icon size={24} />
+                </div>
               </div>
 
               {/* Info */}

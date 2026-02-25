@@ -47,8 +47,10 @@ export interface Database {
           duration_minutes: number
           price: number
           notes: string | null
-          status: 'completed' | 'missed' | 'cancelled' | 'pending'
+          status: 'completed' | 'missed' | 'cancelled' | 'pending' | 'rescheduled'
           schedule_slot_id: string | null
+          rescheduled_to_date: string | null
+          rescheduled_to_time: string | null
           created_at: string
           updated_at: string
         }
@@ -60,8 +62,10 @@ export interface Database {
           duration_minutes: number
           price: number
           notes?: string | null
-          status?: 'completed' | 'missed' | 'cancelled' | 'pending'
+          status?: 'completed' | 'missed' | 'cancelled' | 'pending' | 'rescheduled'
           schedule_slot_id?: string | null
+          rescheduled_to_date?: string | null
+          rescheduled_to_time?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -73,8 +77,10 @@ export interface Database {
           duration_minutes?: number
           price?: number
           notes?: string | null
-          status?: 'completed' | 'missed' | 'cancelled' | 'pending'
+          status?: 'completed' | 'missed' | 'cancelled' | 'pending' | 'rescheduled'
           schedule_slot_id?: string | null
+          rescheduled_to_date?: string | null
+          rescheduled_to_time?: string | null
           created_at?: string
           updated_at?: string
         }

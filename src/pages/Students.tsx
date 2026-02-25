@@ -61,7 +61,7 @@ const Students = () => {
       return data.id
     } else {
       // Add new student
-      const newStudent = await addStudent({
+      const newStudent: any = await addStudent({
         name: data.name,
         hourlyRate: data.hourlyRate,
         category: data.category,

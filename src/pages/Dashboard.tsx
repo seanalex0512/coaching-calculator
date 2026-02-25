@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useStudents } from '../hooks/useStudents'
 import { useSessions } from '../hooks/useSessions'
 import { useSchedule } from '../hooks/useSchedule'
 import { TrendingUpIcon, ClockIcon, CheckIcon, XIcon } from '../components/ui/Icons'
-import { CATEGORIES, Session } from '../types'
+import { CATEGORIES } from '../types'
 import RescheduleModal from '../components/RescheduleModal'
 
 const Dashboard = () => {

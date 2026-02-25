@@ -50,13 +50,12 @@ export const useStudents = () => {
       setError(null)
       const { data, error: insertError } = await supabase
         .from('students')
-        .insert([
-          {
-            name: student.name,
-            hourly_rate: student.hourlyRate,
-            category: student.category,
-          } as any,
-        ])
+        // @ts-ignore - Supabase type inference issue
+        .insert({
+          name: student.name,
+          hourly_rate: student.hourlyRate,
+          category: student.category,
+        })
         .select()
         .single()
 
@@ -93,7 +92,8 @@ export const useStudents = () => {
 
       const { data, error: updateError } = await supabase
         .from('students')
-        .update(updateData as any)
+        // @ts-ignore - Supabase type inference issue
+        .update(updateData)
         .eq('id', id)
         .select()
         .single()
@@ -119,7 +119,8 @@ export const useStudents = () => {
 
       const { data, error: deleteError } = await supabase
         .from('students')
-        .update({ is_active: false } as any)
+        // @ts-ignore - Supabase type inference issue
+        .update({ is_active: false })
         .eq('id', id)
         .select()
 

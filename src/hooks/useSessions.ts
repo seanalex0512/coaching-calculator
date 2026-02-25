@@ -64,6 +64,7 @@ export const useSessions = () => {
       setError(null)
       const { data, error: insertError } = await supabase
         .from('sessions')
+        // @ts-ignore - Supabase type inference issue
         .insert([
           {
             student_id: session.studentId,
@@ -105,6 +106,8 @@ export const useSessions = () => {
       price?: number
       notes?: string
       status?: SessionStatus
+      rescheduledToDate?: string | null
+      rescheduledToTime?: string | null
     }
   ) => {
     try {
@@ -118,9 +121,12 @@ export const useSessions = () => {
       if (updates.price !== undefined) updateData.price = updates.price
       if (updates.notes !== undefined) updateData.notes = updates.notes
       if (updates.status !== undefined) updateData.status = updates.status
+      if (updates.rescheduledToDate !== undefined) updateData.rescheduled_to_date = updates.rescheduledToDate
+      if (updates.rescheduledToTime !== undefined) updateData.rescheduled_to_time = updates.rescheduledToTime
 
       const { data, error: updateError } = await supabase
         .from('sessions')
+        // @ts-ignore - Supabase type inference issue
         .update(updateData)
         .eq('id', id)
         .select()

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Student, Category, CATEGORIES, ScheduleSlot } from '../../types'
+import { Student, Category, CATEGORIES } from '../../types'
 import { useSchedule } from '../../hooks/useSchedule'
 import { XIcon, TrashIcon, PlusIcon, ClockIcon, CheckIcon } from '../ui/Icons'
 
@@ -22,11 +22,12 @@ interface StudentFormProps {
     id?: string
     name: string
     hourlyRate: number
+    category: Category
   }) => Promise<string>
 }
 
 const StudentForm = ({ student, onClose, onDelete, onSave }: StudentFormProps) => {
-  const { scheduleSlots, addScheduleSlot, updateScheduleSlot, deleteScheduleSlot } = useSchedule()
+  const { scheduleSlots, addScheduleSlot, deleteScheduleSlot } = useSchedule()
   const [name, setName] = useState('')
   const [hourlyRate, setHourlyRate] = useState('')
   const [schedules, setSchedules] = useState<ScheduleSlotForm[]>([])
@@ -145,13 +146,6 @@ const StudentForm = ({ student, onClose, onDelete, onSave }: StudentFormProps) =
     }
   }
 
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(':')
-    const hour = parseInt(hours)
-    const ampm = hour >= 12 ? 'PM' : 'AM'
-    const displayHour = hour % 12 || 12
-    return `${displayHour}:${minutes} ${ampm}`
-  }
 
   return (
     <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-sm flex items-end sm:items-center justify-center z-50">
@@ -257,7 +251,6 @@ const StudentForm = ({ student, onClose, onDelete, onSave }: StudentFormProps) =
             ) : (
               <div className="space-y-3">
                 {schedules.map((schedule, index) => {
-                  const catInfo = CATEGORIES[schedule.category]
                   return (
                     <div
                       key={index}
