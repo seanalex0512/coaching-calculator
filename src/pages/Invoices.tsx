@@ -1,20 +1,26 @@
 import { useState } from 'react'
-import { mockStudents, mockSessions } from '../data/mockData'
 import { Session } from '../types'
 import { DownloadIcon, FileTextIcon } from '../components/ui/Icons'
+import { useStudents } from '../hooks/useStudents'
+import { useSessions } from '../hooks/useSessions'
 
 const Invoices = () => {
+  const { students, loading: studentsLoading } = useStudents()
+  const { sessions, loading: sessionsLoading } = useSessions()
   const [selectedStudentId, setSelectedStudentId] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
 
-  const activeStudents = mockStudents.filter((s) => s.isActive)
+  const loading = studentsLoading || sessionsLoading
+  const activeStudents = students.filter((s) => s.isActive)
 
   const getFilteredSessions = (): Session[] => {
     if (!selectedStudentId) return []
 
-    return mockSessions
+    return sessions
       .filter((session) => {
+        // Only include completed sessions in invoices
+        if (session.status !== 'completed') return false
         if (session.studentId !== selectedStudentId) return false
         if (startDate && session.sessionDate < startDate) return false
         if (endDate && session.sessionDate > endDate) return false
@@ -24,7 +30,7 @@ const Invoices = () => {
   }
 
   const filteredSessions = getFilteredSessions()
-  const selectedStudent = mockStudents.find((s) => s.id === selectedStudentId)
+  const selectedStudent = students.find((s) => s.id === selectedStudentId)
   const totalAmount = filteredSessions.reduce((sum, session) => sum + session.price, 0)
   const totalHours = filteredSessions.reduce((sum, session) => sum + session.durationMinutes, 0) / 60
 
@@ -46,6 +52,17 @@ const Invoices = () => {
 
   const handleExport = () => {
     console.log('Export invoice as PDF')
+  }
+
+  if (loading) {
+    return (
+      <div className="px-4 pt-12 pb-4 max-w-lg mx-auto flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900 mx-auto mb-4"></div>
+          <p className="text-slate-500">Loading...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
