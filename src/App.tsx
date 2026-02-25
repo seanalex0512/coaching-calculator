@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import Layout from './components/layout/Layout'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 // Lazy load page components for code splitting
 const Dashboard = lazy(() => import('./pages/Dashboard'))
