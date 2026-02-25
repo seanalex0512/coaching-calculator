@@ -82,7 +82,7 @@ const Invoices = () => {
           <select
             value={selectedStudentId}
             onChange={(e) => setSelectedStudentId(e.target.value)}
-            className="input-field appearance-none"
+            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent bg-white text-slate-900"
           >
             <option value="">Select a student</option>
             {activeStudents.map((student) => (
@@ -93,7 +93,7 @@ const Invoices = () => {
           </select>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
               From
