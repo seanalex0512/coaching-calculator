@@ -93,8 +93,8 @@ const Invoices = () => {
           </select>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
+        <div className="flex gap-3">
+          <div className="flex-1 min-w-0">
             <label className="block text-sm font-medium text-slate-700 mb-2">
               From
             </label>
@@ -102,10 +102,10 @@ const Invoices = () => {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent bg-white text-slate-900 text-sm"
+              className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent bg-white text-slate-900 text-sm appearance-none"
             />
           </div>
-          <div>
+          <div className="flex-1 min-w-0">
             <label className="block text-sm font-medium text-slate-700 mb-2">
               To
             </label>
@@ -113,7 +113,7 @@ const Invoices = () => {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent bg-white text-slate-900 text-sm"
+              className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent bg-white text-slate-900 text-sm appearance-none"
             />
           </div>
         </div>
