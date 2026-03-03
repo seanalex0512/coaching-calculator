@@ -1,20 +1,29 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { ScheduleSlot, Category } from '../types'
+import { useAuth } from '../contexts/AuthContext'
 
 export const useSchedule = () => {
+  const { user } = useAuth()
   const [scheduleSlots, setScheduleSlots] = useState<ScheduleSlot[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Fetch all schedule slots
+  // Fetch all schedule slots for the current user
   const fetchScheduleSlots = async () => {
+    if (!user) {
+      setScheduleSlots([])
+      setLoading(false)
+      return
+    }
+
     try {
       setLoading(true)
       setError(null)
       const { data, error: fetchError } = await supabase
         .from('schedule_slots')
         .select('*')
+        .eq('user_id', user.id)
         .order('day_of_week', { ascending: true })
         .order('start_time', { ascending: true })
 
@@ -51,6 +60,8 @@ export const useSchedule = () => {
     category: Category
     price: number
   }) => {
+    if (!user) throw new Error('User not authenticated')
+
     try {
       setError(null)
       const { data, error: insertError } = await supabase
@@ -64,6 +75,7 @@ export const useSchedule = () => {
             duration_minutes: slot.durationMinutes,
             category: slot.category,
             price: slot.price,
+            user_id: user.id,
           },
         ])
         .select()
@@ -157,7 +169,7 @@ export const useSchedule = () => {
   // Initial fetch
   useEffect(() => {
     fetchScheduleSlots()
-  }, [])
+  }, [user])
 
   return {
     scheduleSlots,

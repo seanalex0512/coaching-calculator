@@ -9,7 +9,7 @@ const Layout = () => {
     { path: '/insights', label: 'Insights', Icon: PieChartIcon },
     { path: '/sessions', label: 'Sessions', Icon: CalendarIcon },
     { path: '/students', label: 'Students', Icon: UsersIcon },
-    { path: '/invoices', label: 'Invoice', Icon: MoreHorizontalIcon },
+    { path: '/more', label: 'More', Icon: MoreHorizontalIcon },
   ]
 
   const isActive = (path: string) => {

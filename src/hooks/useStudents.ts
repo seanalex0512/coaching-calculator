@@ -1,20 +1,29 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { Student, Category } from '../types'
+import { useAuth } from '../contexts/AuthContext'
 
 export const useStudents = () => {
+  const { user } = useAuth()
   const [students, setStudents] = useState<Student[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Fetch all students
+  // Fetch all students for the current user
   const fetchStudents = async () => {
+    if (!user) {
+      setStudents([])
+      setLoading(false)
+      return
+    }
+
     try {
       setLoading(true)
       setError(null)
       const { data, error: fetchError } = await supabase
         .from('students')
         .select('*')
+        .eq('user_id', user.id)
         .eq('is_active', true)  // Only fetch active students
         .order('created_at', { ascending: false })
 
@@ -46,15 +55,18 @@ export const useStudents = () => {
     hourlyRate: number
     category: Category
   }) => {
+    if (!user) throw new Error('User not authenticated')
+
     try {
       setError(null)
-      const { data, error: insertError } = await supabase
+      const { data, error: insertError} = await supabase
         .from('students')
         // @ts-ignore - Supabase type inference issue
         .insert({
           name: student.name,
           hourly_rate: student.hourlyRate,
           category: student.category,
+          user_id: user.id,
         })
         .select()
         .single()
@@ -142,7 +154,7 @@ export const useStudents = () => {
   // Initial fetch
   useEffect(() => {
     fetchStudents()
-  }, [])
+  }, [user])
 
   return {
     students,

@@ -1,22 +1,31 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { Session, Category } from '../types'
+import { useAuth } from '../contexts/AuthContext'
 
 type SessionStatus = 'completed' | 'missed' | 'cancelled' | 'pending' | 'rescheduled'
 
 export const useSessions = () => {
+  const { user } = useAuth()
   const [sessions, setSessions] = useState<Session[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Fetch all sessions
+  // Fetch all sessions for the current user
   const fetchSessions = async () => {
+    if (!user) {
+      setSessions([])
+      setLoading(false)
+      return
+    }
+
     try {
       setLoading(true)
       setError(null)
       const { data, error: fetchError } = await supabase
         .from('sessions')
         .select('*')
+        .eq('user_id', user.id)
         .order('session_date', { ascending: false })
 
       if (fetchError) throw fetchError
@@ -60,6 +69,8 @@ export const useSessions = () => {
     rescheduledToDate?: string
     rescheduledToTime?: string
   }) => {
+    if (!user) throw new Error('User not authenticated')
+
     try {
       setError(null)
       const { data, error: insertError } = await supabase
@@ -77,6 +88,7 @@ export const useSessions = () => {
             schedule_slot_id: session.scheduleSlotId || null,
             rescheduled_to_date: session.rescheduledToDate || null,
             rescheduled_to_time: session.rescheduledToTime || null,
+            user_id: user.id,
           },
         ])
         .select()
@@ -166,7 +178,7 @@ export const useSessions = () => {
   // Initial fetch
   useEffect(() => {
     fetchSessions()
-  }, [])
+  }, [user])
 
   return {
     sessions,
