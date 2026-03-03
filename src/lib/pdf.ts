@@ -37,8 +37,14 @@ export const generateInvoicePDF = (data: InvoiceData) => {
   doc.setFont('helvetica', 'bold')
   doc.text('INVOICE', 20, 25)
 
-  // Date (right side)
-  doc.setFontSize(11)
+  // Student name (right side)
+  doc.setFontSize(18)
+  doc.setFont('helvetica', 'bold')
+  doc.setTextColor(255, 255, 255)
+  doc.text(student.name, 190, 25, { align: 'right' })
+
+  // Date (right side, below name)
+  doc.setFontSize(10)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(203, 213, 225) // slate-300
   const today = new Date().toLocaleDateString('en-US', {
@@ -46,7 +52,7 @@ export const generateInvoicePDF = (data: InvoiceData) => {
     day: 'numeric',
     year: 'numeric'
   })
-  doc.text(today, 190, 25, { align: 'right' })
+  doc.text(today, 190, 32, { align: 'right' })
 
   // Summary boxes
   const summaryY = 45
@@ -91,13 +97,6 @@ export const generateInvoicePDF = (data: InvoiceData) => {
   doc.setFont('helvetica', 'bold')
   doc.setTextColor(mediumGray)
   doc.text('SESSION DETAILS', 20, currentY)
-  currentY += 6
-
-  // Student name below heading
-  doc.setFontSize(11)
-  doc.setFont('helvetica', 'bold')
-  doc.setTextColor(darkGray)
-  doc.text(student.name, 20, currentY)
   currentY += 8
 
   // Table headers
