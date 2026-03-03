@@ -144,7 +144,6 @@ const Invoices = () => {
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-slate-300 text-sm">Bill To</p>
                 <p className="text-lg font-semibold">{selectedStudent.name}</p>
               </div>
             </div>
