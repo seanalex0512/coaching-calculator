@@ -226,7 +226,7 @@ const Insights = () => {
                     Earned {getTimePeriodLabel()}
                   </p>
                   <p className="text-xl font-bold tracking-tight text-white">
-                    ${totalEarnings.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    MYR {totalEarnings.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </p>
                 </div>
               </div>
@@ -246,7 +246,7 @@ const Insights = () => {
                           {categoryInfo.name}
                         </p>
                         <p className="text-lg font-semibold text-white">
-                          ${stat.totalEarnings.toFixed(2)}
+                          MYR {stat.totalEarnings.toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -375,19 +375,19 @@ const Insights = () => {
             <div>
               <p className="text-xs text-slate-500 mb-1">Highest</p>
               <p className="text-base font-semibold text-slate-900">
-                ${Math.max(...monthlyTrend.map(m => m.earnings)).toFixed(0)}
+                MYR {Math.max(...monthlyTrend.map(m => m.earnings)).toFixed(0)}
               </p>
             </div>
             <div>
               <p className="text-xs text-slate-500 mb-1">Average</p>
               <p className="text-base font-semibold text-slate-900">
-                ${(monthlyTrend.reduce((sum, m) => sum + m.earnings, 0) / monthlyTrend.length).toFixed(0)}
+                MYR {(monthlyTrend.reduce((sum, m) => sum + m.earnings, 0) / monthlyTrend.length).toFixed(0)}
               </p>
             </div>
             <div>
               <p className="text-xs text-slate-500 mb-1">This Month</p>
               <p className="text-base font-semibold text-emerald-600">
-                ${monthlyTrend[monthlyTrend.length - 1].earnings.toFixed(0)}
+                MYR {monthlyTrend[monthlyTrend.length - 1].earnings.toFixed(0)}
               </p>
             </div>
           </div>

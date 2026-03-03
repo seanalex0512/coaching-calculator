@@ -93,7 +93,7 @@ const Invoices = () => {
           </select>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
               From
@@ -102,7 +102,7 @@ const Invoices = () => {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="input-field"
+              className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent bg-white text-slate-900 text-sm"
             />
           </div>
           <div>
@@ -113,7 +113,7 @@ const Invoices = () => {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="input-field"
+              className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent bg-white text-slate-900 text-sm"
             />
           </div>
         </div>
@@ -153,7 +153,7 @@ const Invoices = () => {
               </div>
               <div>
                 <p className="text-slate-400 text-xs uppercase tracking-wide mb-1">Total</p>
-                <p className="text-xl font-bold">${totalAmount.toFixed(2)}</p>
+                <p className="text-xl font-bold">MYR {totalAmount.toFixed(2)}</p>
               </div>
             </div>
           </div>
@@ -172,11 +172,11 @@ const Invoices = () => {
                   <div>
                     <p className="font-medium text-slate-900">{formatDate(session.sessionDate)}</p>
                     <p className="text-sm text-slate-500">
-                      {formatDuration(session.durationMinutes)} @ ${selectedStudent.hourlyRate}/hr
+                      {formatDuration(session.durationMinutes)} @ MYR {selectedStudent.hourlyRate}/hr
                     </p>
                   </div>
                   <p className="text-lg font-semibold text-slate-900">
-                    ${session.price.toFixed(2)}
+                    MYR {session.price.toFixed(2)}
                   </p>
                 </div>
               ))}
@@ -185,7 +185,7 @@ const Invoices = () => {
             {/* Total */}
             <div className="flex items-center justify-between pt-4 mt-4 border-t-2 border-slate-900">
               <p className="text-lg font-bold text-slate-900">Total Due</p>
-              <p className="text-2xl font-bold text-slate-900">${totalAmount.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-slate-900">MYR {totalAmount.toFixed(2)}</p>
             </div>
           </div>
 

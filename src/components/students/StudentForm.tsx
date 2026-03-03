@@ -194,8 +194,8 @@ const StudentForm = ({ student, onClose, onDelete, onSave }: StudentFormProps) =
                 Hourly Rate
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium">
-                  $
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium text-xs">
+                  MYR
                 </span>
                 <input
                   type="number"
@@ -209,7 +209,7 @@ const StudentForm = ({ student, onClose, onDelete, onSave }: StudentFormProps) =
                       price: (s.durationMinutes / 60) * rate
                     })))
                   }}
-                  className="input-field pl-8"
+                  className="input-field pl-12"
                   placeholder="0.00"
                   step="0.01"
                   min="0"
@@ -420,8 +420,8 @@ const StudentForm = ({ student, onClose, onDelete, onSave }: StudentFormProps) =
                             Price
                           </label>
                           <div className="relative">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">
-                              $
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs">
+                              MYR
                             </span>
                             <input
                               type="number"
@@ -429,7 +429,7 @@ const StudentForm = ({ student, onClose, onDelete, onSave }: StudentFormProps) =
                               onChange={(e) =>
                                 handleScheduleChange(index, 'price', parseFloat(e.target.value))
                               }
-                              className="input-field text-sm py-2 pl-6"
+                              className="input-field text-sm py-2 pl-11"
                               step="0.01"
                               min="0"
                             />

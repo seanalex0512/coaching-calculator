@@ -152,7 +152,7 @@ const SessionForm = ({ session, students, onClose, onSave, onDelete }: SessionFo
               <option value="">Select a student</option>
               {activeStudents.map((student) => (
                 <option key={student.id} value={student.id}>
-                  {student.name} · ${student.hourlyRate}/hr · {CATEGORIES[student.category].name}
+                  {student.name} · MYR {student.hourlyRate}/hr · {CATEGORIES[student.category].name}
                 </option>
               ))}
             </select>
@@ -290,11 +290,11 @@ const SessionForm = ({ session, students, onClose, onSave, onDelete }: SessionFo
                     {status === 'completed' ? 'Calculated Price' : 'No Charge'}
                   </p>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    {hours}h {minutes}m @ ${selectedStudent.hourlyRate}/hr
+                    {hours}h {minutes}m @ MYR {selectedStudent.hourlyRate}/hr
                   </p>
                 </div>
                 <p className={`text-2xl font-bold ${status === 'completed' ? 'text-emerald-600' : 'text-slate-400 line-through'}`}>
-                  ${calculatedPrice.toFixed(2)}
+                  MYR {calculatedPrice.toFixed(2)}
                 </p>
               </div>
             </div>

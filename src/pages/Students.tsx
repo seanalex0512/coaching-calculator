@@ -200,13 +200,13 @@ const Students = () => {
                     {student.name}
                   </h3>
                   <p className="text-sm text-slate-500">
-                    ${student.hourlyRate}/hr · {sessionCount} sessions
+                    MYR {student.hourlyRate}/hr · {sessionCount} sessions
                   </p>
                 </div>
 
                 {/* Earnings & Arrow */}
                 <div className="flex items-center gap-2">
-                  <p className="text-lg font-bold text-emerald-600">${earnings.toFixed(0)}</p>
+                  <p className="text-lg font-bold text-emerald-600">MYR {earnings.toFixed(0)}</p>
                   <ChevronRightIcon size={20} className="text-slate-300" />
                 </div>
               </div>

@@ -160,7 +160,7 @@ const Sessions = () => {
       <div className="mb-4">
         <h1 className="text-3xl font-bold text-slate-900 mb-1">Sessions</h1>
         <p className="text-slate-500">
-          {thisMonthSessions.length} this month · ${thisMonthEarnings.toFixed(0)}
+          {thisMonthSessions.length} this month · MYR {thisMonthEarnings.toFixed(0)}
         </p>
       </div>
 
@@ -316,7 +316,7 @@ const Sessions = () => {
 
                       {/* Price */}
                       <p className={`text-lg font-bold ${isNotEarned ? 'text-slate-400' : 'text-emerald-600'}`}>
-                        {isNotEarned ? '-' : `+$${session.price.toFixed(0)}`}
+                        {isNotEarned ? '-' : `+MYR ${session.price.toFixed(0)}`}
                       </p>
                     </div>
                   )

@@ -153,7 +153,7 @@ const Schedule = () => {
 
                         {/* Price */}
                         <p className="text-lg font-bold text-emerald-600">
-                          ${slot.price.toFixed(0)}
+                          MYR {slot.price.toFixed(0)}
                         </p>
                       </div>
                     )
@@ -357,7 +357,7 @@ const ScheduleForm = ({ slot, students, onClose, onSave, onDelete }: ScheduleFor
 
           {/* Price */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Price ($) *</label>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Price (MYR) *</label>
             <input
               type="number"
               value={price}
