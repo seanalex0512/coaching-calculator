@@ -165,13 +165,6 @@ export const generateInvoicePDF = (data: InvoiceData) => {
   doc.setFontSize(16)
   doc.text(`MYR ${totalAmount.toFixed(2)}`, 170, currentY)
 
-  // Footer
-  const footerY = 285
-  doc.setFontSize(8)
-  doc.setFont('helvetica', 'normal')
-  doc.setTextColor(lightGray)
-  doc.text('Thank you for your business!', 105, footerY, { align: 'center' })
-
   // Generate filename
   const filename = `invoice-${student.name.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.pdf`
 
