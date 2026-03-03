@@ -215,7 +215,7 @@ const Insights = () => {
                       strokeLinecap="round"
                       strokeDasharray={segment.strokeDasharray}
                       strokeDashoffset={segment.strokeDashoffset}
-                      className="transition-all duration-500"
+                      className="transition-all duration-700 ease-out"
                     />
                   ))}
                 </svg>
