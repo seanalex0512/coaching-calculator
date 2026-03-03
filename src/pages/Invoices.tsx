@@ -3,6 +3,7 @@ import { Session } from '../types'
 import { DownloadIcon, FileTextIcon } from '../components/ui/Icons'
 import { useStudents } from '../hooks/useStudents'
 import { useSessions } from '../hooks/useSessions'
+import { generateInvoicePDF } from '../lib/pdf'
 
 const Invoices = () => {
   const { students, loading: studentsLoading } = useStudents()
@@ -51,7 +52,14 @@ const Invoices = () => {
   }
 
   const handleExport = () => {
-    console.log('Export invoice as PDF')
+    if (!selectedStudent) return
+
+    generateInvoicePDF({
+      student: selectedStudent,
+      sessions: filteredSessions,
+      startDate,
+      endDate,
+    })
   }
 
   if (loading) {
@@ -198,9 +206,6 @@ const Invoices = () => {
               <DownloadIcon size={20} />
               Download PDF
             </button>
-            <p className="text-xs text-center text-slate-400 mt-3">
-              PDF export coming in Phase 4
-            </p>
           </div>
         </div>
       ) : selectedStudent && filteredSessions.length === 0 ? (
