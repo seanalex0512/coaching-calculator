@@ -12,13 +12,9 @@ const Dashboard = () => {
   const { scheduleSlots } = useSchedule()
   const [processingSessionId, setProcessingSessionId] = useState<string | null>(null)
   const [rescheduleItem, setRescheduleItem] = useState<{ type: 'slot' | 'session', data: any } | null>(null)
+  const [selectedMonthIndex, setSelectedMonthIndex] = useState<number>(5) // Default to current month (last in array)
 
   const loading = studentsLoading || sessionsLoading
-
-  // Calculate earnings data (only completed sessions)
-  const totalEarnings = sessions
-    .filter((s) => s.status === 'completed')
-    .reduce((sum, session) => sum + session.price, 0)
 
   // Get last 6 months of data for the chart
   const getMonthlyData = () => {
@@ -44,12 +40,12 @@ const Dashboard = () => {
 
   const monthlyData = getMonthlyData()
   const maxEarnings = Math.max(...monthlyData.map((m) => m.earnings), 1)
-  const currentMonth = monthlyData[monthlyData.length - 1]
-  const lastMonth = monthlyData[monthlyData.length - 2]
+  const selectedMonth = monthlyData[selectedMonthIndex]
+  const previousMonth = selectedMonthIndex > 0 ? monthlyData[selectedMonthIndex - 1] : null
 
-  // Calculate growth percentage
-  const growth = lastMonth.earnings > 0
-    ? ((currentMonth.earnings - lastMonth.earnings) / lastMonth.earnings) * 100
+  // Calculate growth percentage compared to previous month
+  const growth = previousMonth && previousMonth.earnings > 0
+    ? ((selectedMonth.earnings - previousMonth.earnings) / previousMonth.earnings) * 100
     : 0
 
   // Get today's day of week (0 = Sunday, 1 = Monday, etc.)
@@ -245,13 +241,15 @@ const Dashboard = () => {
         <p className="text-slate-500">Track your coaching business</p>
       </div>
 
-      {/* Total Earnings Card */}
+      {/* Monthly Earnings Card */}
       <div className="card p-6 mb-4">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <p className="text-slate-500 text-sm font-medium mb-1">Total Earnings</p>
+            <p className="text-slate-500 text-sm font-medium mb-1">
+              {selectedMonthIndex === 5 ? 'This Month' : selectedMonth.label} Earnings
+            </p>
             <p className="text-4xl font-bold text-slate-900">
-              ${totalEarnings.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              MYR {selectedMonth.earnings.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </p>
           </div>
           {growth !== 0 && (
@@ -273,41 +271,48 @@ const Dashboard = () => {
               const height = maxEarnings > 0
                 ? (month.earnings / maxEarnings) * 100
                 : 0
-              const isCurrentMonth = i === monthlyData.length - 1
+              const isSelected = i === selectedMonthIndex
 
               return (
-                <div key={month.month} className="flex-1 flex flex-col items-center">
+                <button
+                  key={month.month}
+                  onClick={() => setSelectedMonthIndex(i)}
+                  className="flex-1 flex flex-col items-center cursor-pointer group"
+                >
                   <div className="w-full flex flex-col items-center justify-end h-28">
                     {month.earnings > 0 && (
-                      <span className="text-[10px] text-slate-500 font-medium mb-1">
-                        ${month.earnings >= 1000
+                      <span className={`text-[10px] font-medium mb-1 transition-colors ${
+                        isSelected ? 'text-slate-700' : 'text-slate-400 group-hover:text-slate-500'
+                      }`}>
+                        MYR {month.earnings >= 1000
                           ? `${(month.earnings / 1000).toFixed(1)}k`
                           : month.earnings.toFixed(0)}
                       </span>
                     )}
                     <div
                       className={`w-full max-w-[40px] rounded-t-lg transition-all duration-300 ${
-                        isCurrentMonth
+                        isSelected
                           ? 'bg-slate-900'
-                          : 'bg-slate-200'
+                          : 'bg-slate-200 group-hover:bg-slate-300'
                       }`}
                       style={{ height: month.earnings > 0 ? `${height}%` : '2px' }}
                     />
                   </div>
-                </div>
+                </button>
               )
             })}
           </div>
           <div className="flex justify-between gap-2">
             {monthlyData.map((month, i) => (
-              <div
+              <button
                 key={month.month}
-                className={`flex-1 text-center text-xs font-medium ${
-                  i === monthlyData.length - 1 ? 'text-slate-900' : 'text-slate-400'
+                onClick={() => setSelectedMonthIndex(i)}
+                className={`flex-1 text-center text-xs font-medium transition-colors cursor-pointer ${
+                  i === selectedMonthIndex ? 'text-slate-900' : 'text-slate-400 hover:text-slate-600'
                 }`}
               >
                 {month.label}
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -318,7 +323,7 @@ const Dashboard = () => {
         <div className="card p-4">
           <p className="text-slate-500 text-xs font-medium mb-1">This Month</p>
           <p className="text-2xl font-bold text-slate-900">
-            ${currentMonth.earnings.toFixed(0)}
+            MYR {monthlyData[5].earnings.toFixed(0)}
           </p>
         </div>
         <div className="card p-4">
@@ -398,7 +403,7 @@ const Dashboard = () => {
                         </span>
                       </div>
                     </div>
-                    <p className="text-lg font-bold text-emerald-600">${price.toFixed(0)}</p>
+                    <p className="text-lg font-bold text-emerald-600">MYR {price.toFixed(0)}</p>
                   </div>
 
                   {/* Action Buttons */}
@@ -406,26 +411,26 @@ const Dashboard = () => {
                     <button
                       onClick={() => handleMarkMissed(item)}
                       disabled={isProcessing}
-                      className="btn-secondary flex-1 py-2.5 text-red-600 border-red-200 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="btn-secondary flex-1 py-2.5 px-2 text-red-600 border-red-200 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm min-w-0"
                     >
-                      <XIcon size={18} />
-                      Missed
+                      <XIcon size={16} className="shrink-0" />
+                      <span className="truncate">Missed</span>
                     </button>
                     <button
                       onClick={() => handleReschedule(item)}
                       disabled={isProcessing}
-                      className="btn-secondary flex-1 py-2.5 text-blue-600 border-blue-200 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="btn-secondary flex-1 py-2.5 px-2 text-blue-600 border-blue-200 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm min-w-0"
                     >
-                      <ClockIcon size={18} />
-                      Reschedule
+                      <ClockIcon size={16} className="shrink-0" />
+                      <span className="truncate">Reschedule</span>
                     </button>
                     <button
                       onClick={() => handleMarkDone(item)}
                       disabled={isProcessing}
-                      className="btn-primary flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="btn-primary flex-1 py-2.5 px-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm min-w-0"
                     >
-                      <CheckIcon size={18} />
-                      Done
+                      <CheckIcon size={16} className="shrink-0" />
+                      <span className="truncate">Done</span>
                     </button>
                   </div>
                 </div>
