@@ -91,9 +91,16 @@ const Students = () => {
   }
 
   const getStudentEarnings = (studentId: string) => {
+    const student = students.find((s) => s.id === studentId)
+    if (!student) return 0
+
     return sessions
       .filter((s) => s.studentId === studentId && s.status === 'completed')
-      .reduce((sum, s) => sum + s.price, 0)
+      .reduce((sum, s) => {
+        // Recalculate price based on current hourly rate
+        const price = (s.durationMinutes / 60) * student.hourlyRate
+        return sum + price
+      }, 0)
   }
 
   if (loading) {
