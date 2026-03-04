@@ -51,7 +51,7 @@ const NotificationPanel = ({
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-100">
+        <div className="flex items-center justify-between p-4 pt-14 border-b border-slate-100">
           <div>
             <h2 className="text-lg font-bold text-slate-900">Notifications</h2>
             {unreadCount > 0 && (

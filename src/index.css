@@ -73,4 +73,9 @@
   .safe-area-bottom {
     padding-bottom: env(safe-area-inset-bottom, 8px);
   }
+
+  /* Safe area for iPhone notch/dynamic island */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
 }
