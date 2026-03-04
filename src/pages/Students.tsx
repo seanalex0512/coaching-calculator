@@ -94,26 +94,26 @@ const Students = () => {
     const student = students.find((s) => s.id === studentId)
     if (!student) return 0
 
-    // Get the student's current schedule slots to use their durations
+    // Get the student's current schedule slots
     const studentSchedules = scheduleSlots.filter(
       (slot) => slot.studentId === studentId && slot.isActive
     )
 
-    return sessions
-      .filter((s) => s.studentId === studentId && s.status === 'completed')
-      .reduce((sum, s) => {
-        // Find matching schedule slot for this session's category
-        const matchingSchedule = studentSchedules.find(
-          (slot) => slot.category === s.category
-        )
+    // Count completed sessions
+    const completedSessions = sessions.filter(
+      (s) => s.studentId === studentId && s.status === 'completed'
+    )
 
-        // Use schedule duration if available, otherwise fall back to session duration
-        const duration = matchingSchedule ? matchingSchedule.durationMinutes : s.durationMinutes
+    // If student has schedule slots, use the schedule price and count
+    if (studentSchedules.length > 0) {
+      // Get the first schedule slot (most students have consistent pricing)
+      const primarySchedule = studentSchedules[0]
+      // Calculate: number of sessions × schedule price
+      return completedSessions.length * primarySchedule.price
+    }
 
-        // Recalculate price based on current hourly rate and current schedule duration
-        const price = (duration / 60) * student.hourlyRate
-        return sum + price
-      }, 0)
+    // Fallback: use stored session prices
+    return completedSessions.reduce((sum, s) => sum + s.price, 0)
   }
 
   if (loading) {
