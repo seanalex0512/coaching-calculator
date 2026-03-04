@@ -22,7 +22,7 @@ const Layout = () => {
   return (
     <div className="flex flex-col min-h-screen bg-slate-100">
       {/* Main Content */}
-      <main className="flex-1 pb-24">
+      <main className="flex-1 pb-28">
         <Outlet />
       </main>
 
