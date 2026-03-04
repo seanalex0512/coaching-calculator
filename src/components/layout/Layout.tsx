@@ -35,7 +35,7 @@ const Layout = () => {
       {/* Notification Bell - Fixed Top Right */}
       <button
         onClick={() => setShowNotifications(true)}
-        className="fixed top-4 right-4 z-40 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-slate-50 transition-colors"
+        className="fixed top-12 right-4 z-40 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-slate-50 transition-colors"
       >
         <BellIcon size={22} className="text-slate-700" />
         {unreadCount > 0 && (
