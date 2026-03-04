@@ -14,6 +14,17 @@ const Login = () => {
         navigate('/')
       }
     })
+
+    // Handle the OAuth callback
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        navigate('/')
+      }
+    })
+
+    return () => {
+      authListener.subscription.unsubscribe()
+    }
   }, [navigate])
 
   const handleGoogleLogin = async () => {
