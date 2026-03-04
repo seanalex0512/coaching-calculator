@@ -10,6 +10,7 @@ CREATE TABLE invoices (
   total_amount NUMERIC(10,2) NOT NULL CHECK (total_amount >= 0),
   status invoice_status_type NOT NULL DEFAULT 'draft',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   sent_at TIMESTAMPTZ,
   paid_at TIMESTAMPTZ,
   notes TEXT

@@ -111,14 +111,22 @@ const Invoices = () => {
 
   const handleMarkAsSent = async () => {
     if (!selectedInvoice) return
-    await updateInvoiceStatus(selectedInvoice.id, 'sent')
-    setSelectedInvoice({ ...selectedInvoice, status: 'sent', sentAt: new Date().toISOString() })
+    try {
+      await updateInvoiceStatus(selectedInvoice.id, 'sent')
+      setSelectedInvoice({ ...selectedInvoice, status: 'sent', sentAt: new Date().toISOString() })
+    } catch (err) {
+      console.error('Failed to mark as sent:', err)
+    }
   }
 
   const handleMarkAsPaid = async () => {
     if (!selectedInvoice) return
-    await updateInvoiceStatus(selectedInvoice.id, 'paid')
-    setSelectedInvoice({ ...selectedInvoice, status: 'paid', paidAt: new Date().toISOString() })
+    try {
+      await updateInvoiceStatus(selectedInvoice.id, 'paid')
+      setSelectedInvoice({ ...selectedInvoice, status: 'paid', paidAt: new Date().toISOString() })
+    } catch (err) {
+      console.error('Failed to mark as paid:', err)
+    }
   }
 
   const handleDeleteInvoice = async () => {
