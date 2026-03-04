@@ -61,7 +61,7 @@
   }
 
   .nav-item {
-    @apply flex flex-col items-center gap-1 pt-3 pb-6 px-3 text-slate-400
+    @apply flex flex-col items-center justify-center gap-1 pt-2 pb-4 px-3 text-slate-400
            transition-colors duration-150;
   }
 
