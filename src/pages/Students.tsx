@@ -94,11 +94,24 @@ const Students = () => {
     const student = students.find((s) => s.id === studentId)
     if (!student) return 0
 
+    // Get the student's current schedule slots to use their durations
+    const studentSchedules = scheduleSlots.filter(
+      (slot) => slot.studentId === studentId && slot.isActive
+    )
+
     return sessions
       .filter((s) => s.studentId === studentId && s.status === 'completed')
       .reduce((sum, s) => {
-        // Recalculate price based on current hourly rate
-        const price = (s.durationMinutes / 60) * student.hourlyRate
+        // Find matching schedule slot for this session's category
+        const matchingSchedule = studentSchedules.find(
+          (slot) => slot.category === s.category
+        )
+
+        // Use schedule duration if available, otherwise fall back to session duration
+        const duration = matchingSchedule ? matchingSchedule.durationMinutes : s.durationMinutes
+
+        // Recalculate price based on current hourly rate and current schedule duration
+        const price = (duration / 60) * student.hourlyRate
         return sum + price
       }, 0)
   }
