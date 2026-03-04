@@ -35,9 +35,11 @@ Follow these steps to enable Google authentication for your Coaching Calculator 
 9. **Authorized JavaScript origins**:
    - Add: `https://your-project-ref.supabase.co`
    - Add: `http://localhost:5173` (for local development)
+   - Add: `https://coaching-calculator.vercel.app` (for production)
 10. **Authorized redirect URIs**:
     - Add: `https://your-project-ref.supabase.co/auth/v1/callback`
     - Add: `http://localhost:5173` (for local development)
+    - Add: `https://coaching-calculator.vercel.app` (for production)
 
     **IMPORTANT**: Replace `your-project-ref` with your actual Supabase project reference
 
@@ -129,6 +131,14 @@ After successful login:
 
 ### Local development not working
 - Make sure you added `http://localhost:5173` to both JavaScript origins and redirect URIs in Google Console
+
+### Production (Vercel) redirects to localhost
+- This means your Google OAuth is not configured for production
+- Go to Google Cloud Console → Credentials → Your OAuth Client
+- Add `https://coaching-calculator.vercel.app` to BOTH:
+  - Authorized JavaScript origins
+  - Authorized redirect URIs
+- Click Save and wait a few minutes for changes to propagate
 
 ## Security Notes
 
