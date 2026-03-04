@@ -104,12 +104,12 @@ const Students = () => {
       (s) => s.studentId === studentId && s.status === 'completed'
     )
 
-    // If student has schedule slots, use the schedule price and count
+    // If student has schedule slots, calculate based on average schedule pricing
     if (studentSchedules.length > 0) {
-      // Get the first schedule slot (most students have consistent pricing)
-      const primarySchedule = studentSchedules[0]
-      // Calculate: number of sessions × schedule price
-      return completedSessions.length * primarySchedule.price
+      // Calculate average price per session from schedule slots
+      const avgPrice = studentSchedules.reduce((sum, slot) => sum + slot.price, 0) / studentSchedules.length
+      // Calculate: number of sessions × average price
+      return completedSessions.length * avgPrice
     }
 
     // Fallback: use stored session prices
