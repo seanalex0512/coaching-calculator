@@ -15,8 +15,13 @@ const Insights = () => {
 
     switch (timePeriod) {
       case 'week':
+        // Get start of current week (Monday)
         startDate = new Date(now)
-        startDate.setDate(now.getDate() - 7)
+        const dayOfWeek = startDate.getDay()
+        // If Sunday (0), go back 6 days to Monday; otherwise go back (dayOfWeek - 1) days
+        const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1
+        startDate.setDate(startDate.getDate() - daysToMonday)
+        startDate.setHours(0, 0, 0, 0)
         break
       case 'month':
         startDate = new Date(now.getFullYear(), now.getMonth(), 1)

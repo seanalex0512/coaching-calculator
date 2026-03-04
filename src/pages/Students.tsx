@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Student, Category, CATEGORIES } from '../types'
 import { useStudents } from '../hooks/useStudents'
-import { useSessions } from '../hooks/useSessions'
 import { useSchedule } from '../hooks/useSchedule'
 import StudentForm from '../components/students/StudentForm'
 import DeleteConfirmation from '../components/students/DeleteConfirmation'
@@ -9,7 +8,6 @@ import { PlusIcon, ChevronRightIcon } from '../components/ui/Icons'
 
 const Students = () => {
   const { students, loading, error, deleteStudent, addStudent, updateStudent } = useStudents()
-  const { sessions } = useSessions()
   const { scheduleSlots } = useSchedule()
   const [showForm, setShowForm] = useState(false)
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
@@ -87,33 +85,27 @@ const Students = () => {
   }
 
   const getStudentSessionCount = (studentId: string) => {
-    return sessions.filter((s) => s.studentId === studentId).length
+    // Count weekly scheduled sessions (active schedule slots)
+    return scheduleSlots.filter((s) => s.studentId === studentId && s.isActive).length
   }
 
   const getStudentEarnings = (studentId: string) => {
     const student = students.find((s) => s.id === studentId)
     if (!student) return 0
 
-    // Get the student's current schedule slots
+    // Get the student's active schedule slots
     const studentSchedules = scheduleSlots.filter(
       (slot) => slot.studentId === studentId && slot.isActive
     )
 
-    // Count completed sessions
-    const completedSessions = sessions.filter(
-      (s) => s.studentId === studentId && s.status === 'completed'
-    )
+    // Calculate weekly earnings from all scheduled slots
+    let total = 0
+    studentSchedules.forEach(slot => {
+      const calculatedPrice = (slot.durationMinutes / 60) * student.hourlyRate
+      total += calculatedPrice
+    })
 
-    // If student has schedule slots, calculate based on average schedule pricing
-    if (studentSchedules.length > 0) {
-      // Calculate average price per session from schedule slots
-      const avgPrice = studentSchedules.reduce((sum, slot) => sum + slot.price, 0) / studentSchedules.length
-      // Calculate: number of sessions × average price
-      return completedSessions.length * avgPrice
-    }
-
-    // Fallback: use stored session prices
-    return completedSessions.reduce((sum, s) => sum + s.price, 0)
+    return total
   }
 
   if (loading) {
