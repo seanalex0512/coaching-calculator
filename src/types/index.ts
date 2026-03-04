@@ -108,3 +108,30 @@ export interface StudentWithStats extends Student {
   totalSessions: number
   totalEarnings: number
 }
+
+export type NotificationType = 'session_reminder' | 'invoice_ready' | 'general'
+
+export interface Notification {
+  id: string
+  userId: string
+  type: NotificationType
+  title: string
+  message: string
+  isRead: boolean
+  data?: Record<string, any>
+  scheduledFor?: string | null
+  createdAt: string
+}
+
+export interface NotificationSettings {
+  id: string
+  userId: string
+  pushEnabled: boolean
+  sessionReminderTime: string // HH:MM format
+  sessionReminderEnabled: boolean
+  invoiceReminderEnabled: boolean
+  invoiceReminderDay: number // 0 = Sunday
+  pushSubscription?: any
+  createdAt: string
+  updatedAt: string
+}

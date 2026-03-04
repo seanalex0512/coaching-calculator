@@ -49,6 +49,7 @@ export interface Database {
           notes: string | null
           status: 'completed' | 'missed' | 'cancelled' | 'pending' | 'rescheduled'
           schedule_slot_id: string | null
+          invoice_id: string | null
           rescheduled_to_date: string | null
           rescheduled_to_time: string | null
           created_at: string
@@ -64,6 +65,7 @@ export interface Database {
           notes?: string | null
           status?: 'completed' | 'missed' | 'cancelled' | 'pending' | 'rescheduled'
           schedule_slot_id?: string | null
+          invoice_id?: string | null
           rescheduled_to_date?: string | null
           rescheduled_to_time?: string | null
           created_at?: string
@@ -79,6 +81,7 @@ export interface Database {
           notes?: string | null
           status?: 'completed' | 'missed' | 'cancelled' | 'pending' | 'rescheduled'
           schedule_slot_id?: string | null
+          invoice_id?: string | null
           rescheduled_to_date?: string | null
           rescheduled_to_time?: string | null
           created_at?: string
@@ -118,6 +121,120 @@ export interface Database {
           price?: number
           is_active?: boolean
           created_at?: string
+        }
+      }
+      invoices: {
+        Row: {
+          id: string
+          user_id: string
+          student_id: string
+          invoice_number: string
+          total_amount: number
+          status: 'draft' | 'sent' | 'paid'
+          notes: string | null
+          created_at: string
+          updated_at: string
+          sent_at: string | null
+          paid_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          student_id: string
+          invoice_number: string
+          total_amount: number
+          status?: 'draft' | 'sent' | 'paid'
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+          sent_at?: string | null
+          paid_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          student_id?: string
+          invoice_number?: string
+          total_amount?: number
+          status?: 'draft' | 'sent' | 'paid'
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+          sent_at?: string | null
+          paid_at?: string | null
+        }
+      }
+      notifications: {
+        Row: {
+          id: string
+          user_id: string
+          type: 'session_reminder' | 'invoice_ready' | 'general'
+          title: string
+          message: string
+          is_read: boolean
+          data: Json | null
+          scheduled_for: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          type: 'session_reminder' | 'invoice_ready' | 'general'
+          title: string
+          message: string
+          is_read?: boolean
+          data?: Json | null
+          scheduled_for?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          type?: 'session_reminder' | 'invoice_ready' | 'general'
+          title?: string
+          message?: string
+          is_read?: boolean
+          data?: Json | null
+          scheduled_for?: string | null
+          created_at?: string
+        }
+      }
+      notification_settings: {
+        Row: {
+          id: string
+          user_id: string
+          push_enabled: boolean
+          session_reminder_time: string
+          session_reminder_enabled: boolean
+          invoice_reminder_enabled: boolean
+          invoice_reminder_day: number
+          push_subscription: Json | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          push_enabled?: boolean
+          session_reminder_time?: string
+          session_reminder_enabled?: boolean
+          invoice_reminder_enabled?: boolean
+          invoice_reminder_day?: number
+          push_subscription?: Json | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          push_enabled?: boolean
+          session_reminder_time?: string
+          session_reminder_enabled?: boolean
+          invoice_reminder_enabled?: boolean
+          invoice_reminder_day?: number
+          push_subscription?: Json | null
+          created_at?: string
+          updated_at?: string
         }
       }
     }

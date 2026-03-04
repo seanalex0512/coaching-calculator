@@ -19,10 +19,6 @@ const Invoices = () => {
   const [invoiceSessions, setInvoiceSessions] = useState<Session[]>([])
   const [loadingSessions, setLoadingSessions] = useState(false)
 
-  const getStudentName = (studentId: string) => {
-    return students.find((s) => s.id === studentId)?.name || 'Unknown'
-  }
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',

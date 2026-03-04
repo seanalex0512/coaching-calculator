@@ -1,14 +1,35 @@
 import { useAuth } from '../contexts/AuthContext'
 import { useNavigate, Link } from 'react-router-dom'
-import { LogOutIcon, FileTextIcon } from '../components/ui/Icons'
+import { LogOutIcon, FileTextIcon, BellIcon } from '../components/ui/Icons'
+import { useNotifications } from '../hooks/useNotifications'
 
 const More = () => {
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
+  const { settings, updateSettings, requestPushPermission } = useNotifications()
 
   const handleSignOut = async () => {
     await signOut()
     navigate('/login')
+  }
+
+  const handleToggleSessionReminder = () => {
+    if (settings) {
+      updateSettings({ sessionReminderEnabled: !settings.sessionReminderEnabled })
+    }
+  }
+
+  const handleToggleInvoiceReminder = () => {
+    if (settings) {
+      updateSettings({ invoiceReminderEnabled: !settings.invoiceReminderEnabled })
+    }
+  }
+
+  const handleEnablePush = async () => {
+    const success = await requestPushPermission()
+    if (!success) {
+      alert('Could not enable push notifications. Please check your browser settings.')
+    }
   }
 
   return (
@@ -39,7 +60,7 @@ const More = () => {
       <div className="card overflow-hidden mb-4">
         <Link
           to="/invoices"
-          className="w-full px-6 py-4 flex items-center gap-3 text-left hover:bg-slate-50 transition-colors border-b border-slate-100"
+          className="w-full px-6 py-4 flex items-center gap-3 text-left hover:bg-slate-50 transition-colors"
         >
           <FileTextIcon size={20} className="text-slate-700" />
           <div className="flex-1">
@@ -60,6 +81,76 @@ const More = () => {
             />
           </svg>
         </Link>
+      </div>
+
+      {/* Notifications */}
+      <div className="card p-6 mb-4">
+        <div className="flex items-center gap-3 mb-4">
+          <BellIcon size={20} className="text-slate-700" />
+          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+            Notifications
+          </h2>
+        </div>
+
+        {/* Session Reminders */}
+        <div className="flex items-center justify-between py-3 border-b border-slate-100">
+          <div>
+            <p className="font-medium text-slate-900">Session Reminders</p>
+            <p className="text-sm text-slate-500">Daily reminder at 10:00 AM</p>
+          </div>
+          <button
+            onClick={handleToggleSessionReminder}
+            className={`relative w-12 h-7 rounded-full transition-colors ${
+              settings?.sessionReminderEnabled ? 'bg-slate-900' : 'bg-slate-300'
+            }`}
+          >
+            <span
+              className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                settings?.sessionReminderEnabled ? 'left-6' : 'left-1'
+              }`}
+            />
+          </button>
+        </div>
+
+        {/* Invoice Reminders */}
+        <div className="flex items-center justify-between py-3 border-b border-slate-100">
+          <div>
+            <p className="font-medium text-slate-900">Invoice Reminders</p>
+            <p className="text-sm text-slate-500">Weekly reminder on Sundays</p>
+          </div>
+          <button
+            onClick={handleToggleInvoiceReminder}
+            className={`relative w-12 h-7 rounded-full transition-colors ${
+              settings?.invoiceReminderEnabled ? 'bg-slate-900' : 'bg-slate-300'
+            }`}
+          >
+            <span
+              className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                settings?.invoiceReminderEnabled ? 'left-6' : 'left-1'
+              }`}
+            />
+          </button>
+        </div>
+
+        {/* Push Notifications */}
+        <div className="flex items-center justify-between py-3">
+          <div>
+            <p className="font-medium text-slate-900">Push Notifications</p>
+            <p className="text-sm text-slate-500">
+              {settings?.pushEnabled ? 'Enabled' : 'Get notified even when app is closed'}
+            </p>
+          </div>
+          {settings?.pushEnabled ? (
+            <span className="text-sm text-green-600 font-medium">Active</span>
+          ) : (
+            <button
+              onClick={handleEnablePush}
+              className="px-3 py-1.5 text-sm font-medium text-white bg-slate-900 rounded-lg hover:bg-slate-800 transition-colors"
+            >
+              Enable
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Actions */}
