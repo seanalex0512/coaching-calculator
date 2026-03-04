@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Invoice, Session, Student, CATEGORIES } from '../types'
 import { useInvoices } from '../hooks/useInvoices'
 import { useStudents } from '../hooks/useStudents'
-import { generateInvoicePDF } from '../lib/pdf'
-import { PlusIcon, CheckIcon, ChevronRightIcon, DownloadIcon, ChevronLeftIcon } from '../components/ui/Icons'
+import { generateInvoicePDF, shareInvoicePDF } from '../lib/pdf'
+import { PlusIcon, CheckIcon, ChevronRightIcon, DownloadIcon, ChevronLeftIcon, ShareIcon } from '../components/ui/Icons'
 
 type ViewMode = 'list' | 'create' | 'detail'
 
@@ -142,6 +142,19 @@ const Invoices = () => {
     if (!student) return
 
     generateInvoicePDF({
+      student,
+      sessions: invoiceSessions,
+      startDate: invoiceSessions[0]?.sessionDate || '',
+      endDate: invoiceSessions[invoiceSessions.length - 1]?.sessionDate || '',
+    })
+  }
+
+  const handleSharePDF = async () => {
+    if (!selectedInvoice) return
+    const student = students.find(s => s.id === selectedInvoice.studentId)
+    if (!student) return
+
+    await shareInvoicePDF({
       student,
       sessions: invoiceSessions,
       startDate: invoiceSessions[0]?.sessionDate || '',
@@ -430,13 +443,22 @@ const Invoices = () => {
 
         {/* Actions */}
         <div className="space-y-3">
-          <button
-            onClick={handleExportPDF}
-            className="w-full py-3 border-2 border-slate-900 text-slate-900 font-semibold rounded-xl hover:bg-slate-50 flex items-center justify-center gap-2"
-          >
-            <DownloadIcon size={20} />
-            Download PDF
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={handleSharePDF}
+              className="flex-1 py-3 bg-slate-900 text-white font-semibold rounded-xl hover:bg-slate-800 flex items-center justify-center gap-2"
+            >
+              <ShareIcon size={20} />
+              Share
+            </button>
+            <button
+              onClick={handleExportPDF}
+              className="flex-1 py-3 border-2 border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 flex items-center justify-center gap-2"
+            >
+              <DownloadIcon size={20} />
+              Download
+            </button>
+          </div>
 
           {selectedInvoice.status === 'draft' && (
             <button
