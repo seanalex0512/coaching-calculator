@@ -52,10 +52,30 @@ export interface Session {
   notes?: string
   status: 'completed' | 'missed' | 'cancelled' | 'pending' | 'rescheduled'
   scheduleSlotId?: string | null
+  invoiceId?: string | null
   rescheduledToDate?: string // The new date if this session was rescheduled
   rescheduledToTime?: string // The new time if this session was rescheduled
   createdAt: string
   updatedAt: string
+}
+
+export type InvoiceStatus = 'draft' | 'sent' | 'paid'
+
+export interface Invoice {
+  id: string
+  studentId: string
+  invoiceNumber: string
+  totalAmount: number
+  status: InvoiceStatus
+  createdAt: string
+  sentAt?: string | null
+  paidAt?: string | null
+  notes?: string | null
+}
+
+export interface InvoiceWithSessions extends Invoice {
+  sessions: Session[]
+  student?: Student
 }
 
 export interface ScheduleSlot {
